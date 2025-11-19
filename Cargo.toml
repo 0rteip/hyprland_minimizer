@@ -1,0 +1,29 @@
+# This file defines the project metadata and dependencies.
+
+[package]
+name = "hyprland-minimizer"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# zbus is a modern, async D-Bus library
+zbus = { version = "3", default-features = false, features = ["tokio"] }
+
+# tokio is the asynchronous runtime
+tokio = { version = "1", features = ["rt", "macros", "sync", "time", "signal"] }
+
+# For parsing JSON output from hyprctl
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# For handling errors gracefully
+anyhow = "1.0"
+clap = { version = "4.5.4", features = ["derive"] }
+tokio-stream = "0.1"
+
+[profile.release]
+codegen-units = 1
+lto = true

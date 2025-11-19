@@ -1,0 +1,39 @@
+# Hyprland Minimizer Configuration
+# Copy this file to: ~/.config/hyprland-minimizer/config.toml
+# Or it will be created automatically on first run
+
+# Each app needs:
+# - name: Display name for the application
+# - class: The window class (use `hyprctl clients` to find it)
+# - icon: Icon name for tray and notifications (optional)
+# - command: Array of command and arguments to launch the app
+# - notify_name: Application name for notifications (optional)
+# - launch_in_background: Launch directly in special workspace (optional, default: false)
+# - launch_timeout: Max seconds to wait for app launch (optional, default: 10)
+
+[apps.whatsapp]
+name = "WhatsApp"
+class = "whatsapp"
+icon = "whatsapp"
+command = ["uwsm", "app", "--", "firefox", "--name=whatsapp", "-P", "echo", "--new-window", "https://web.whatsapp.com/"]
+notify_name = "whatsapp"
+launch_in_background = false  # Keep visible on launch
+launch_timeout = 15  # Firefox can be slow to start
+
+[apps.spotify]
+name = "Spotify"
+class = "spotify"
+icon = "spotify"
+command = ["uwsm", "app", "--", "spotify-launcher"]
+notify_name = "spotify-media"
+launch_in_background = true  # Launch hidden in background
+launch_timeout = 10  # Default timeout
+
+# Example: Custom web app in Firefox
+# [apps.gmail]
+# name = "Gmail"
+# class = "gmail"
+# icon = "gmail"
+# command = ["firefox", "--name=gmail", "--new-window", "https://mail.google.com"]
+# notify_name = "gmail"
+# launch_in_background = false
