@@ -2,16 +2,23 @@
 
 A lightweight system tray daemon for Hyprland that lets you minimize applications to the tray using special workspaces.
 
+## Demo
+
+<p align="center">
+  <img src="assets/demo.gif" alt="Demo" width="100%">
+</p>
+
 ## Overview
 
 Hyprland Minimizer creates persistent tray icons for your applications, allowing you to toggle their visibility with a single click or keyboard shortcut. Applications are moved to special (hidden) workspaces when minimized, keeping your main workspaces clean.
 
 ### Key Features
 
-- **Per-app daemons** — One lightweight background process per managed application
+- **Lightweight** — ~4.5 MiB memory usage per daemon process
+- **Per-app daemons** — One background process per managed application
 - **Configurable apps** — Define any application via simple TOML config
 - **Auto-launch** — Automatically starts applications if they're not running
-- **Tray integration** — Full StatusNotifier protocol support (Waybar, etc.)
+- **Tray integration** — Tested only with waybar
 - **Smart detection** — Intelligent launch detection with configurable timeout
 - **Single instance** — Prevents duplicate daemons with PID file locking
 
@@ -54,7 +61,7 @@ launch_in_background = false         # Optional: start hidden (default: false)
 launch_timeout = 10                  # Optional: detection timeout in seconds (default: 10)
 ```
 
-### Example: Firefox Web Apps
+### Example: Firefox Web App
 
 ```toml
 [apps.whatsapp]
@@ -64,14 +71,9 @@ icon = "whatsapp"
 command = ["firefox", "--name=whatsapp", "--new-window", "https://web.whatsapp.com/"]
 launch_timeout = 15
 
-[apps.gmail]
-name = "Gmail"
-class = "gmail"
-icon = "gmail"
-command = ["firefox", "--name=gmail", "--new-window", "https://mail.google.com/"]
 ```
 
-### Example: Native Apps
+### Example: Native
 
 ```toml
 [apps.spotify]
@@ -81,11 +83,6 @@ icon = "spotify"
 command = ["spotify"]
 launch_in_background = true
 
-[apps.discord]
-name = "Discord"
-class = "discord"
-icon = "discord"
-command = ["discord", "--start-minimized"]
 ```
 
 > **Tip:** Find window classes with `hyprctl clients | grep -i class`
@@ -107,7 +104,6 @@ Examples:
 ```bash
 hyprland-minimizer whatsapp
 hyprland-minimizer spotify
-hyprland-minimizer discord
 ```
 
 ### Behavior
@@ -117,7 +113,7 @@ hyprland-minimizer discord
 - Launches the application (if not running)
 - Creates a system tray icon
 - Starts a persistent daemon process
-- Moves window to special workspace (if `launch_in_background = true`)
+- Moves window to special workspace after launch (if `launch_in_background = true`)
 
 **Subsequent invocations:**
 
@@ -143,9 +139,7 @@ Add keybindings to your `~/.config/hypr/hyprland.conf`:
 ```conf
 # Toggle applications with Super key
 bind = SUPER, W, exec, hyprland-minimizer whatsapp
-bind = SUPER, M, exec, hyprland-minimizer gmail
 bind = SUPER, S, exec, hyprland-minimizer spotify
-bind = SUPER, D, exec, hyprland-minimizer discord
 ```
 
 ---
@@ -167,6 +161,7 @@ bind = SUPER, D, exec, hyprland-minimizer discord
 **Symptom**: "Failed to find window with class 'xyz' after launching"
 
 **Solutions**:
+
 - Verify the window class: `hyprctl clients | grep -i "class"`
 - Increase `launch_timeout` in your config (slow apps may need 15-30 seconds)
 - Check that the command launches correctly: run it manually first
@@ -174,8 +169,10 @@ bind = SUPER, D, exec, hyprland-minimizer discord
 ### Tray icon not showing
 
 **Solutions**:
+
 - Ensure you have a StatusNotifier-compatible tray running (e.g., Waybar)
 - For Waybar, enable the tray module in your config:
+
   ```json
   "modules-right": ["tray", ...],
   "tray": {
@@ -209,4 +206,4 @@ hyprctl clients | grep -A 5 "title: YourApp"
 
 ## License
 
-MIT License - Do whatever you want with this code.
+BSD-3-Clause License
